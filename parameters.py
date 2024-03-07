@@ -1,3 +1,5 @@
+URL = 'https://aves.ninjas.cl/api/birds'
+
 html_template = '''<!DOCTYPE html>
 <html lang="es">
     <meta charset="UTF-8">

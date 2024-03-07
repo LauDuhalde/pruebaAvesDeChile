@@ -1,13 +1,42 @@
 import requests
 import json
 from string import Template
-import template as t
+import parameters as p
 
 def request_get(url):
-    return json.loads(requests.get(url).text)
+    """
+    Realiza petición request a bdd de Aves
+    ------------
+    Parameter
+    ------------
+    url
+        Type:   String
+    
+    Return
+    ------------
+    response
+        Type:   JSON
+        Descripción:    Respuesta completa de API Get
+    """
+    response = json.loads(requests.get(url).text)
+    return response
 
 def process_birds_data():
-    response = request_get('https://aves.ninjas.cl/api/birds')
+    """
+    Procesa los datos obtenidos con request_get para simplificarlos
+    ------------
+    Parameter
+    ------------
+    None
+    
+    Return
+    ------------
+    birds
+        Type:   Array de diccionarios
+        Descripción:    diccionario contiene nombre, name e image
+        Ejemplo:    ["{'nombre': 'Tenca', 'name': 'Chilean Mockingbird', 'image': 'https://aves.ninjas.cl/'},{'nombre': 'Tórtola Común', 'name': 'Eared Dove', 'image': 'https://aves.ninjas.cl'}"]
+    """
+    response = request_get(p.URL)
     birds = []
     for bird in response:
         new_bird={}
@@ -18,7 +47,20 @@ def process_birds_data():
     return birds
 
 def create_template():
-    bird_template = Template(t.bird_template)
+    """
+    Arma template de imagenes
+    ------------
+    Parameter
+    ------------
+    None
+    
+    Return
+    ------------
+    content
+        Type:   String
+        Descripción: Texto con contenido para escribir HTML de imagenes
+    """
+    bird_template = Template(p.bird_template)
     content = ''
     for bird in process_birds_data():
         content += bird_template.substitute(url = bird["image"], nombre = bird["nombre"],name = bird["name"])
